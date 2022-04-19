@@ -10,11 +10,11 @@ using namespace std;
 
 int main()
 {
-    double height;
-    double weight;
-    double bmi;
-    int obesity;
-    string degreeOfObesity;
+    double height;  //身長
+    double weight;  //体重
+    double bmi;  //BMI
+    int obesity;  //肥満度の数値
+    string degreeOfObesity;  //肥満度
 
     cout << "身長を入力してください(m) : ";
     cin >> height;
