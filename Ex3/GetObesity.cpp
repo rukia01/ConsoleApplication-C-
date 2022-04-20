@@ -1,3 +1,5 @@
+#include"GetObesity.h"
+
 int GetObesity(double bmi)
 {
     int degreeOfObesity;
