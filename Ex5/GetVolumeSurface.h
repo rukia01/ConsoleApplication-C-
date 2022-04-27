@@ -9,5 +9,5 @@ struct BOX {	//箱の定義
 	double packSize;  //送れる宅急便のサイズ
 };
 
-void GetVolumeSurface(BOX* box);
+void getVolumeSurface(BOX* box);
 bool isSendable(BOX* box);

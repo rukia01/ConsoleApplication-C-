@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 using namespace std;
-#include "GetVolumeSurface.h"
+#include "getVolumeSurface.h"
 
 int main()
 {
@@ -14,7 +14,7 @@ int main()
 		cin >> boxes[i].y;
 		cout << "奥行を入力：";
 		cin >> boxes[i].z;
-		GetVolumeSurface(&boxes[i]);
+		getVolumeSurface(&boxes[i]);
 		withinRange = isSendable(&boxes[i]);
 		cout << "体積は" << boxes[i].volume << endl;
 		cout << "表面積は" << boxes[i].surface << endl;
