@@ -8,10 +8,31 @@ using namespace std;
 /// 物体の定義
 /// </summary>
 class Solid {
+private:
+    string* name;
 public:
+    Solid(const char* name = NULL)
+    {
+        if (name != NULL)
+        {
+            this->name = new string(name);
+        }
+        else
+        {
+            this->name = NULL;
+        }
+    }
     virtual double GetVolume() = 0;
     virtual double GetSurface() = 0;
     virtual double GetPackageLength() = 0;
+    const char* GetName()
+    {
+        return name->data();
+    }
+    ~Solid()
+    {
+        name->~basic_string();
+    }
 };
 
 /// <summary>
@@ -27,7 +48,9 @@ public:
     Box(
         double width,   //幅
         double height,  //高さ
-        double depth) {//奥行
+        double depth,   //奥行
+        const char* name = NULL  //名前
+    ):Solid(name) {
         this->width = width;
         this->height = height;
         this->depth = depth;
@@ -55,7 +78,9 @@ private:
 public:
     Cylinder(
         double radius,   //底面の半径
-        double height) { //高さ
+        double height,  //高さ
+        const char* name = NULL  //名前
+    ):Solid(name) {
         this->radius = radius;
         this->height = height;
     }
@@ -80,7 +105,9 @@ private:
 public:
     Cone(
         double radius,   //底面の半径
-        double height) { //高さ
+        double height,   //高さ
+        const char* name = NULL  //名前
+    ):Solid(name) {
         this->radius = radius;
         this->height = height;
     }
@@ -103,7 +130,9 @@ private:
     double radius;
 public:
     Sphere(
-        double radius) {  //球の半径
+        double radius,  //球の半径
+        const char* name = NULL  //名前
+    ):Solid(name) {
         this->radius = radius;
     }
     double GetVolume() {
