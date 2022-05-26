@@ -192,27 +192,6 @@ public:
     }
 };
 
-int GetKuronekoPackageSize(Solid& solid)
-{
-    int size[] = { 60,80,100,120,140,160,180,200 };
-    int i;
-    int packageSize = 0;
-    double packageLength = solid.GetPackageLength();
-    for (i = 0; i < _countof(size); i++)
-    {
-        if (packageLength <= size[i])
-        {
-            packageSize = size[i];
-            break;
-        }
-        else
-        {
-            packageSize = 0;
-        }
-    }
-    return packageSize;
-}
-
 int main()
 {
     // 料金表
