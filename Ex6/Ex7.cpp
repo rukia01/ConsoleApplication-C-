@@ -4,6 +4,34 @@
 #include <math.h>
 using namespace std;
 
+
+class FreightTable {
+private:
+    const int* freight;
+    int length;
+public:
+    FreightTable(const int freight[], int length) {
+        this->freight = freight;
+        this->length = length;
+    }
+    int GetFreight(int index) {
+        return freight[index];
+    }
+    int GetPackageSize(double packageLength) {
+        int i;
+        int packageSIze = 0;
+        for (i = 0; i < length; i++)
+        {
+            if (packageLength <= *(freight + i))
+            {
+                packageSIze = *(freight + i);
+                break;
+            }
+        }
+        return packageSIze;
+    }
+};
+
 /// <summary>
 /// 物体の定義
 /// </summary>
@@ -32,6 +60,24 @@ public:
     ~Solid()
     {
         name->~basic_string();
+    }
+};
+
+class Package
+{
+private:
+    FreightTable* freightTable;
+    Solid* solid;
+public:
+    Package(FreightTable* freightTable, Solid* solid) {
+        this->freightTable = freightTable;
+        this->solid = solid;
+    }
+    int GetPackageSize() {
+        return freightTable->GetPackageSize(solid->GetPackageLength());
+    }
+    Solid& GetSolid() {
+        return *solid;
     }
 };
 
@@ -169,25 +215,40 @@ int GetKuronekoPackageSize(Solid& solid)
 
 int main()
 {
-    Box* box = new Box{ 10,30,10 };
-    Cylinder* cylinder = new Cylinder{ 20,30 };
-    Cone* cone = new Cone{ 30,40 };
-    Sphere* sphere = new Sphere{ 40 };
-    const int solidLength = 4;
-    int i;
-    int packageSize;
-    Solid* solid[solidLength] = { box,cylinder,cone,sphere };
-    for (i = 0; i < solidLength; i++)
+    // 料金表
+    const int kuronekoSize[] = { 60,80,100,120,140,160,180,200 };
+    const int yupackSize[] = { 60,80,100,120,140,160,170 };
+    const int sagawaSize[] = { 60,80,100,140,160 };
+    // 料金算出をするクラス
+    FreightTable kuronekoFreight(kuronekoSize, _countof(kuronekoSize));
+    FreightTable yupackFreight(kuronekoSize, _countof(kuronekoSize));
+    FreightTable sagawaFreight(kuronekoSize, _countof(kuronekoSize));
+    Box gunpla = Box(80.0, 20.0, 5.0, "MGガンダム1/144");
+    Cylinder canJuice = Cylinder(30, 10, "Qoo");
+    Cone cone = Cone(30, 10, "コーン");
+    Sphere succerBall = Sphere(20, "FIFA公認サッカーボール");
+    const int N_TABLE = 6;
+    Package* package[N_TABLE] =
     {
-        packageSize = GetKuronekoPackageSize(*solid[i]);
-        if (packageSize != 0)
-        {
-            cout << "クロネコ宅急便の宅急便サイズは" << packageSize << "サイズです。" << endl;
+        new Package(&kuronekoFreight, &gunpla),
+        new Package(&yupackFreight, &gunpla),
+        new Package(&sagawaFreight, &gunpla),
+        new Package(&kuronekoFreight,&canJuice),
+        new Package(&kuronekoFreight,&cone),
+        new Package(&kuronekoFreight,&succerBall)
+    };
+
+    double length;
+    int packageSize;
+
+    for (int i = 0; i < N_TABLE; i++) {
+        cout << "[" << i + 1 << "]" << package[i]->GetSolid().GetName() << endl;
+        int packageSize = package[i]->GetPackageSize();
+        if (packageSize != 0) {
+            cout << package[i]->GetSolid().GetName() << "のサイズは" << packageSize << "サイズです" << endl;
         }
-        else
-        {
-            cout << "クロネコ宅急便では送れません。" << endl;
+        else {
+            cout << "この" << package[i]->GetSolid().GetName() << "は宅急便では送れません" << endl;
         }
     }
-    return 0;
 }
